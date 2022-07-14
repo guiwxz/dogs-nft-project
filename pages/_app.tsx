@@ -1,8 +1,24 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import React from "react";
+import { AppProps } from "next/app";
+import { ComposedProviders } from "../src/store/composeProviders";
+import AppWrapper from "../src/components/AppWrapper";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+import "../src/config/global.css";
+
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+
+  return (
+    // <Login />
+    // <ThemeProvider theme={theme}>
+    
+    <ComposedProviders>
+      <AppWrapper>
+        {/*@ts-ignore*/}
+        <Component {...pageProps} />
+      </AppWrapper>
+    </ComposedProviders>
+
+    // </ThemeProvider>
+  );
 }
-
-export default MyApp
