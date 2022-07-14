@@ -1,6 +1,8 @@
 import React from "react";
 import api from "../../../services/api";
+import nftStorageApi from "../../../services/nftStorageApi";
 import { DogsNFTType, DogsNFTContextSchema, DogsName } from "../dogs.types";
+
 
 export const DogsNFTContext = React.createContext<DogsNFTContextSchema>(
   {} as DogsNFTContextSchema
@@ -23,21 +25,34 @@ const DogsProvider: React.FC = ({ children }) => {
       console.warn(err);
     }
   };
-  /*
-  const postWatchingAnime = async (cod_user: number, anime: WatchingAnime) => {
+  
+  const postDogsNft = async (dogName: DogsName, dog: DogsNFTType, blob: any) => {
     try {
-      const response = await api.postWatchingAnime({
-        cod_user,
-        ...anime,
-      });
-      console.log(response);
+      const res = await nftStorageApi.uploadBlob(blob);
 
-      fetchWatchingAnimes();
+      if (res.ok) {
+        const { cid } = res.value;
+        console.log(res);
+
+        const response = await api.postDogsNft({
+          ...dog,
+          dogName: dogName,
+          fileCid: cid,
+          fileName: blob.name
+        });
+        console.log(response);
+
+        fetchDogsNft({ dogName });
+
+      } else {
+        console.warn('Alguma coisa deu errado');
+      }
+
     } catch (err) {
       console.warn(err);
     }
   };
-  */
+  
   /*
   const editWatchingAnime = async (codigo: number, anime: WatchingAnime) => {
     try {
@@ -83,6 +98,7 @@ const DogsProvider: React.FC = ({ children }) => {
         dogLexa,
         dogLittle,
         fetchDogsNft,
+        postDogsNft
       }}
     >
       {children}

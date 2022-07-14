@@ -5,6 +5,7 @@ const composeProviders = (...providers: Array<React.JSXElementConstructor<React.
   ({ children }: any) =>
     providers.reduceRight(
       (childrenProvider, Provider) => 
+        //@ts-ignore
         <Provider>
           {childrenProvider}
         </Provider>,

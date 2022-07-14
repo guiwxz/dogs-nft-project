@@ -1,12 +1,12 @@
 export type DogsName = "Mell" | "Redy" | "Lexa" | "Little";
 
 export type DogsNFTType = {
-  dogsName: DogsName;
+  dogName: DogsName;
   title: string;
-  date: string;
+  date?: string;
   description?: string;
   fileName?: string;
-  fileCID?: string;
+  fileCid?: string;
 };
 
 export interface DogsNFTContextSchema {
@@ -15,6 +15,7 @@ export interface DogsNFTContextSchema {
   dogLexa: DogsNFTType[];
   dogLittle: DogsNFTType[];
   fetchDogsNft: (params: { dogName: DogsName }) => Promise<void>;
+  postDogsNft: (dogName: DogsName, dog: DogsNFTType, blob: any) => Promise<void>;
   //postWatchingAnime: (cod_user: number, anime: DogsNFTType) => Promise<void>;
   //editWatchingAnime: (codigo: number, anime: DogsNFTType) => Promise<void>;
   //deleteWatchingAnime: (codigo: number) => Promise<void>;

@@ -18,25 +18,23 @@ import PageHeader from "../../components/PageHeader";
 import { DogsNFTType } from "../../store/dogs/dogs.types";
 import useDescriptionModal from "../../store/descriptionModal/useDescriptionModal/useDescriptionModal";
 import useDogsNft from "../../store/dogs/useDogs/useDogs";
-
-import { NFTStorage, Blob, File } from 'nft.storage';
-import Dropzone from "../../components/Dropzone";
-
+import Dropzone, { ImageProps } from "../../components/Dropzone";
+import copy from 'copy-to-clipboard';
 
 const MellPage: React.FC = () => {
   const { 
     fetchDogsNft,
+    postDogsNft,
     dogMell
   } = useDogsNft();
   const { setDescriptionModal } = useDescriptionModal();
   
   const [openModal, setOpenModal] = React.useState(false);
-  const [image, setImage] = React.useState('');
-
-  console.log('ababhababna', image);
+  const [image, setImage] = React.useState<ImageProps>({} as ImageProps);
 
   const handleSubmit = async (values: DogsNFTType) => {
-    console.log(values);
+
+    postDogsNft('Mell', values, image.blob);
     setOpenModal(false);
   };
 /*
@@ -86,7 +84,7 @@ const MellPage: React.FC = () => {
               icons: [
                 {
                   icon: <FiCopy size={22} />,
-                  onClick: () => alert("copiar"),
+                  onClick: (values) => copy(values.fileCid || ''),
                 },
               ],
             },
@@ -106,22 +104,21 @@ const MellPage: React.FC = () => {
       </Grid>
 
       <ModalDialog
-        title="Adicionar anime"
+        title="Adicionar fotinha"
         open={openModal}
         onClose={() => setOpenModal(false)}
       >
         <Grid container>
           <Grid item xs={12}>
-            <Form handleSubmit={handleSubmit}>
+            <Form handleSubmit={handleSubmit} nonFieldsCount={1}>
               <InputField label="Titulo" name="title" id="nome" />
               <InputField label="Descrição" name="description" id="descricao" />
-              <InputField label="Episódio" name="ep_counter" type="number" id="ep" />
               <Dropzone value={image} onChange={setImage} />
               <div
                 style={{
                   display: "flex",
                   justifyContent: "flex-end",
-                  marginTop: "8px",
+                  marginTop: "20px",
                   gap: "10px",
                 }}
               >

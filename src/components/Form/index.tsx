@@ -2,10 +2,11 @@ import React from 'react';
 
 interface FormProps {
   handleSubmit: (payload: any) => void;
+  nonFieldsCount?: number;
 }
 
 
-const Form: React.FC<FormProps> = (props) => {
+const Form: React.FC<FormProps> = ({ handleSubmit, children, nonFieldsCount = 0 }) => {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
@@ -19,7 +20,7 @@ const Form: React.FC<FormProps> = (props) => {
       return;
     }
     let obj = {};
-    for (let i = 0; i <= (e.target.length-2); i++) {
+    for (let i = 0; i <= (e.target.length - (nonFieldsCount! + 2)); i++) {
       obj = {
         ...obj,
         [e.target[`${i}`].name]: e.target[`${i}`].value,
@@ -27,7 +28,7 @@ const Form: React.FC<FormProps> = (props) => {
       e.target[`${i}`].value = '';
     }
     //console.log(obj)
-    return props.handleSubmit(obj);
+    return handleSubmit(obj);
   }
 
   // console.log(props.children);
@@ -47,7 +48,7 @@ const Form: React.FC<FormProps> = (props) => {
 
   return (
     <form onSubmit={onSubmit}>
-      {props.children}
+      {children}
     </form>
   );
 }

@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { SignInPayload, SignInRequestData } from "../store/auth/auth.types";
-import { DogsName } from "../store/dogs/dogs.types";
+import { DogsName, DogsNFTType } from "../store/dogs/dogs.types";
 import { getAPIClient } from "./apiWithContext";
 
 export const baseApi = getAPIClient();
@@ -29,7 +29,6 @@ const api = {
       .then(parseResponse)
       .catch((err) => console.warn(err));
   },
-
   fetchDogsNft: async (params: { dogName: DogsName }) => {
     return await baseApi
       .get(`/dogs/${params.dogName}`, {
@@ -38,9 +37,9 @@ const api = {
       .then(parseResponse)
       .catch((err) => console.warn(err));
   },
-  postWatchingAnime: async (anime: WatchingAnime) => {
+  postDogsNft: async (dog: DogsNFTType) => {
     return await baseApi
-      .post("/animeswatching", anime, {
+      .post("/dogs", dog, {
         method: "POST",
       })
       .then(parseResponse)
