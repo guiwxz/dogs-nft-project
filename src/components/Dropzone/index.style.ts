@@ -13,3 +13,20 @@ export const DropzoneWrapper = styled.div`
 
   margin: 14px 0;
 `;
+
+export const ImageInsideDiv = styled.div`
+  color: ${colorPalette.primary[300]};
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-left: 12px;
+  font-size: 14px;
+  gap: 4px;
+  font-style: oblique;
+`;
+
+export const ImageInsidePropsDiv = styled.span`
+  color: ${colorPalette.primary[500]};
+  font-size: 11px;
+`;

@@ -2,31 +2,40 @@ import React from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Blob } from 'nft.storage';
 
-import { DropzoneWrapper } from './index.style';
+import { DropzoneWrapper, ImageInsideDiv, ImageInsidePropsDiv } from './index.style';
+import Image from 'next/image';
 
 interface DropzoneProps {
-  value: string;
-  onChange: React.Dispatch<React.SetStateAction<string>>
+  value: ImageProps;
+  onChange: React.Dispatch<React.SetStateAction<ImageProps>>
+}
+
+export type ImageProps = {
+  image: string;
+  blob: {
+    name: string;
+    type: string;
+    size: string;
+  };
 }
 
 const DropzoneComponent: React.FC<DropzoneProps> = ({ value, onChange }) => {
   const [loading, setLoading] = React.useState(false);
-
-  const onDrop = React.useCallback(acceptedFiles => {
+  const onDrop = React.useCallback(files => {
     setLoading(true);
-    onChange(acceptedFiles[0]);
+    //onChange(acceptedFiless[0]);
     setLoading(false);
-    console.log(acceptedFiles);
 
-    const preview = URL.createObjectURL(acceptedFiles[0]);
-    console.log(preview)
-
+    const preview = URL.createObjectURL(files[0]);
+    onChange({
+      image: preview,
+      blob: files[0]
+    });
     let reader = new FileReader();
-    reader.readAsDataURL(acceptedFiles[0]);
+    reader.readAsDataURL(files[0]);
     reader.onload = function () {
-      acceptedFiles[0].base64 = reader.result;
+      files[0].base64 = reader.result;
     };
-    console.log(acceptedFiles[0]);
   }, [])
 
   const {getRootProps, getInputProps} = useDropzone({ 
@@ -38,8 +47,15 @@ const DropzoneComponent: React.FC<DropzoneProps> = ({ value, onChange }) => {
     <DropzoneWrapper {...getRootProps()}>
       <input {...getInputProps()} />
       {
-        value ? (
-          <img src={value} width="150px" height="140px"  />
+        Object.keys(value).length > 0 ? (
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <Image src={value.image} width="150px" height="140px" alt="Imagem uploadada" />
+            <ImageInsideDiv>
+              <div><ImageInsidePropsDiv>name: </ImageInsidePropsDiv>{value.blob.name}</div>
+              <div><ImageInsidePropsDiv>type: </ImageInsidePropsDiv>{value.blob.type}</div>
+              <div><ImageInsidePropsDiv>size: </ImageInsidePropsDiv>{value.blob.size} bytes</div>
+            </ImageInsideDiv>
+          </div>
 
         ) : loading ? (
           <p>loading...</p>
