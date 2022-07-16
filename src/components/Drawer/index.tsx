@@ -15,20 +15,24 @@ const Drawer: React.FC<{ switchTheme?: (param: boolean) => void }> = ({
     <Container>
       <div style={{ height: "87%" }}>
         <Header>
-          <img src="/static/redy_feliz.jpeg" width="150px" height="140px"  />
+          <img src="/static/redy_feliz.jpeg" width="150px" height="140px" />
         </Header>
         <DrawerItems>
           <Item onClick={() => router.push("/mell")}>
             <FiPlay size="20px" />
             Mell
           </Item>
-          <Item onClick={() => router.push("/to-watch")}>
+          <Item onClick={() => router.push("/redy")}>
             <FiPause size="20px" />
-            To Watch
+            Redy
           </Item>
-          <Item onClick={() => router.push("/ended")}>
+          <Item onClick={() => router.push("/lexa")}>
             <HiOutlineColorSwatch size="20px" />
-            Ended
+            Lexa
+          </Item>
+          <Item onClick={() => router.push("/little")}>
+            <HiOutlineColorSwatch size="20px" />
+            Little
           </Item>
         </DrawerItems>
       </div>

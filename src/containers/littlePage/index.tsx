@@ -22,14 +22,14 @@ import Dropzone, { ImageProps } from "../../components/Dropzone";
 import copy from "copy-to-clipboard";
 
 const MellPage: React.FC = () => {
-  const { fetchDogsNft, postDogsNft, fetchCidImage, dogMell } = useDogsNft();
+  const { fetchDogsNft, postDogsNft, fetchCidImage, dogLittle } = useDogsNft();
   const { setDescriptionModal } = useDescriptionModal();
 
   const [openModal, setOpenModal] = React.useState(false);
   const [image, setImage] = React.useState<ImageProps>({} as ImageProps);
 
   const handleSubmit = async (values: DogsNFTType) => {
-    postDogsNft("Mell", values, image.blob);
+    postDogsNft("Little", values, image.blob);
     setOpenModal(false);
     setImage({} as ImageProps);
   };
@@ -45,7 +45,7 @@ const MellPage: React.FC = () => {
   };
 
   React.useEffect(() => {
-    fetchDogsNft({ dogName: "Mell" });
+    fetchDogsNft({ dogName: "Little" });
   }, []);
   /*
   const handleRemoveAnime = ({ codigo }: WatchingAnime) => {
@@ -65,11 +65,11 @@ const MellPage: React.FC = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <PageHeader onClick={() => setOpenModal(true)} title="Mell" />
+        <PageHeader onClick={() => setOpenModal(true)} title="Little" />
       </Grid>
       <Grid item xs={12}>
         <DataTable
-          data={dogMell}
+          data={dogLittle}
           onRowClick={handleOpenCidImage}
           columns={[
             {

@@ -1,9 +1,8 @@
-import React from 'react';
+import React from "react";
+import RedyPage from "../src/containers/redyPage";
 
-const EndedPage = () => {
-  return (
-    <></>
-  )
-}
+const NextRedyPage = () => {
+  return <RedyPage />;
+};
 
-export default EndedPage;
+export default NextRedyPage;

@@ -33,7 +33,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ onClick, title }) => {
         }}
       >
         <Button onClick={onClick}>
-          <FaPlus size="16px" /> Add anime
+          <FaPlus size="16px" /> Add dog image
         </Button>
       </Grid>
     </Grid>

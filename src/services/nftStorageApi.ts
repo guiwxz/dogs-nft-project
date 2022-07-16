@@ -1,6 +1,4 @@
 import axios, { AxiosResponse } from "axios";
-import { SignInPayload, SignInRequestData } from "../store/auth/auth.types";
-
 
 const api = axios.create({
   baseURL: "https://api.nft.storage",
@@ -24,6 +22,13 @@ const nftStorageApi = {
       method: 'POST',
     })
     .then(parseResponse)
+    .catch((err) => console.warn(err));
+  },
+  fetchCidImage: async (cid: string) => {
+    return await api.get(`/${cid}`, {
+      method: 'GET',
+    })
+    .then((parseResponse))
     .catch((err) => console.warn(err));
   }
 };

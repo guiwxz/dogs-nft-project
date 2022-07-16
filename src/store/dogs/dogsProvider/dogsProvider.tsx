@@ -3,30 +3,55 @@ import api from "../../../services/api";
 import nftStorageApi from "../../../services/nftStorageApi";
 import { DogsNFTType, DogsNFTContextSchema, DogsName } from "../dogs.types";
 
-
 export const DogsNFTContext = React.createContext<DogsNFTContextSchema>(
   {} as DogsNFTContextSchema
 );
 
 const DogsProvider: React.FC = ({ children }) => {
-  const [dogMell, setDogMell] = React.useState<DogsNFTType[]>([] as DogsNFTType[]);
-  const [dogRedy, setDogRedy] = React.useState<DogsNFTType[]>([] as DogsNFTType[]);
-  const [dogLexa, setDogLexa] = React.useState<DogsNFTType[]>([] as DogsNFTType[]);
-  const [dogLittle, setDogLittle] = React.useState<DogsNFTType[]>([] as DogsNFTType[]);
+  const [dogMell, setDogMell] = React.useState<DogsNFTType[]>(
+    [] as DogsNFTType[]
+  );
+  const [dogRedy, setDogRedy] = React.useState<DogsNFTType[]>(
+    [] as DogsNFTType[]
+  );
+  const [dogLexa, setDogLexa] = React.useState<DogsNFTType[]>(
+    [] as DogsNFTType[]
+  );
+  const [dogLittle, setDogLittle] = React.useState<DogsNFTType[]>(
+    [] as DogsNFTType[]
+  );
 
   const fetchDogsNft = async (params: { dogName: DogsName }) => {
-    console.log("DFFETCHCHCHCH")
+    console.log("DFFETCHCHCHCH");
     try {
       const response = await api.fetchDogsNft(params);
-      console.log(response)
-      if (response) setDogMell(response.data);
-
+      console.log(response);
+      if (response) {
+        switch (params.dogName) {
+          case "Mell":
+            setDogMell(response.data);
+            break;
+          case "Redy":
+            setDogRedy(response.data);
+            break;
+          case "Lexa":
+            setDogLexa(response.data);
+            break;
+          case "Little":
+            setDogLittle(response.data);
+            break;
+        }
+      }
     } catch (err) {
       console.warn(err);
     }
   };
-  
-  const postDogsNft = async (dogName: DogsName, dog: DogsNFTType, blob: any) => {
+
+  const postDogsNft = async (
+    dogName: DogsName,
+    dog: DogsNFTType,
+    blob: any
+  ) => {
     try {
       const res = await nftStorageApi.uploadBlob(blob);
 
@@ -38,21 +63,32 @@ const DogsProvider: React.FC = ({ children }) => {
           ...dog,
           dogName: dogName,
           fileCid: cid,
-          fileName: blob.name
+          fileName: blob.name,
         });
         console.log(response);
 
         fetchDogsNft({ dogName });
-
       } else {
-        console.warn('Alguma coisa deu errado');
+        console.warn("Alguma coisa deu errado");
       }
-
     } catch (err) {
       console.warn(err);
     }
   };
-  
+
+  const fetchCidImage = async (cid: string) => {
+    try {
+      const response = await nftStorageApi.fetchCidImage(cid);
+
+      if (response.ok) {
+      }
+
+      console.log(response);
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
   /*
   const editWatchingAnime = async (codigo: number, anime: WatchingAnime) => {
     try {
@@ -88,7 +124,6 @@ const DogsProvider: React.FC = ({ children }) => {
     }
   };
   */
-  
 
   return (
     <DogsNFTContext.Provider
@@ -98,7 +133,8 @@ const DogsProvider: React.FC = ({ children }) => {
         dogLexa,
         dogLittle,
         fetchDogsNft,
-        postDogsNft
+        postDogsNft,
+        fetchCidImage,
       }}
     >
       {children}

@@ -36,14 +36,17 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns, onRowClick }) => {
 
   const [editedTitle, setEditedTitle] = React.useState("");
 
-  const pushActionToRightStyle = React.useMemo(() => ({
-    display: 'flex',
-    justifyContent: 'flex-end',
-  }), [])
+  const pushActionToRightStyle = React.useMemo(
+    () => ({
+      display: "flex",
+      justifyContent: "flex-end",
+    }),
+    []
+  );
 
   const _dateFormat = (date: string) => {
-    return moment(date).format('DD/MM/YY HH:mm');
-  }
+    return moment(date).format("DD/MM/YY HH:mm");
+  };
 
   return (
     <TableWrapper>
@@ -54,13 +57,11 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns, onRowClick }) => {
             if (column.removeAction) {
               return (
                 <TableTitle key={column.label}>
-                  <div style={pushActionToRightStyle}>
-                    {column.label}
-                  </div>
+                  <div style={pushActionToRightStyle}>{column.label}</div>
                 </TableTitle>
-              )
+              );
             }
-            return <TableTitle key={column.label}>{column.label}</TableTitle>
+            return <TableTitle key={column.label}>{column.label}</TableTitle>;
           })}
         </TableHeader>
 
@@ -70,12 +71,15 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns, onRowClick }) => {
             {columns.map(({ name, icons, removeAction, dateFormat }) => {
               if (name === "action") {
                 return (
-                  <TableRowData key={name+i} style={removeAction ? {...pushActionToRightStyle } : {}}>
+                  <TableRowData
+                    key={name + i}
+                    style={removeAction ? { ...pushActionToRightStyle } : {}}
+                  >
                     {icons?.map(({ icon, onClick }) => {
                       return (
                         <div
                           key={icon.toString()}
-                          id={removeAction ? "removeButton" : ''}
+                          id={removeAction ? "removeButton" : ""}
                           onClick={onClick ? () => onClick(it) : () => {}}
                           style={{
                             float: "left", // kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk funcionou perfeitamente
@@ -94,7 +98,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns, onRowClick }) => {
               if (openEditInput.open && openEditInput.row == it[name]) {
                 return (
                   <TableRowData
-                    key={name+i}
+                    key={name + i}
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -119,9 +123,9 @@ const DataTable: React.FC<DataTableProps> = ({ data, columns, onRowClick }) => {
               }
               return (
                 <TableRowData
-                  key={name+i}
+                  key={name + i}
                   id="openEditModal"
-                  onDoubleClick={onRowClick ? () => onRowClick(it) : () => {}}
+                  onClick={onRowClick ? () => onRowClick(it) : () => {}}
                   //width="30%"
                   // onDoubleClick={() => {
                   //   setOpenEditInput({ open: true, row: it[name] });
