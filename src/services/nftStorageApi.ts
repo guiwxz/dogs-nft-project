@@ -30,7 +30,14 @@ const nftStorageApi = {
     })
     .then((parseResponse))
     .catch((err) => console.warn(err));
-  }
+  },
+  deleteCid: async (cid: string) => {
+    return await api.get(`/${cid}`, {
+      method: 'DELETE',
+    })
+    .then((parseResponse))
+    .catch((err) => console.warn(err));
+  },
 };
 
 export default nftStorageApi;

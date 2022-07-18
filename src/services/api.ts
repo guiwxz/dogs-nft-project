@@ -45,18 +45,18 @@ const api = {
       .then(parseResponse)
       .catch((err) => console.warn(err));
   },
-  editWatchingAnime: async (codigo: number, anime: WatchingAnime) => {
+  deleteDogsNft: async (_id: string) => {
     return await baseApi
-      .put(`/animeswatching/${codigo}`, anime, {
-        method: "PUT",
+      .delete(`/delete-dog/${_id}`, {
+        method: "DELETE",
       })
       .then(parseResponse)
       .catch((err) => console.warn(err));
   },
-  deleteWatchingAnime: async (codigo: number) => {
+  editWatchingAnime: async (codigo: number, anime: WatchingAnime) => {
     return await baseApi
-      .delete(`/animeswatching/${codigo}`, {
-        method: "DELETE",
+      .put(`/animeswatching/${codigo}`, anime, {
+        method: "PUT",
       })
       .then(parseResponse)
       .catch((err) => console.warn(err));

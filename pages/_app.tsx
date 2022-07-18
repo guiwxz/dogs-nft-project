@@ -4,10 +4,10 @@ import { ComposedProviders } from "../src/store/composeProviders";
 import AppWrapper from "../src/components/AppWrapper";
 
 import "../src/config/global.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-
   return (
     // <Login />
     // <ThemeProvider theme={theme}>

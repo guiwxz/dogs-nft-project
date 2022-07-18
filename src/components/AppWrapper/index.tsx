@@ -5,11 +5,13 @@ import { ComposedProviders } from '../../store/composeProviders';
 import DescriptionModalProvider from '../../store/descriptionModal/descriptionModalProvider/descriptionModalProvider';
 import useDogsNft from '../../store/dogs/useDogs/useDogs';
 import Drawer from '../Drawer';
+import { useRouter } from 'next/router';
+import Loader from '../Loader';
 
 const AppWrapper: React.FC = ({ children }) => {
   const { fetchDogsNft } = useDogsNft();
   //const { fetchToWatchAnimes } = useToWatch();
-  
+  const router = useRouter();
   React.useEffect(() => {
     fetchDogsNft({ dogName: 'Mell' });
     //fetchToWatchAnimes();
@@ -17,14 +19,22 @@ const AppWrapper: React.FC = ({ children }) => {
   }, [])
 
   return (
-    <div style={{ display: "flex" }}>
-      <Drawer />
-      <DescriptionModalProvider>
+    router.pathname == '/' ? (
+      <div style={{ display: "flex" }}>
         <div style={{ padding: "30px 60px", width: "100%" }}>
           {children}
         </div>
-      </DescriptionModalProvider>
-    </div>
+      </div>
+    ) : (
+      <div style={{ display: "flex" }}>
+        <Drawer />
+        <DescriptionModalProvider>
+          <div style={{ padding: "30px 60px", width: "100%" }}>
+            {children}
+          </div>
+        </DescriptionModalProvider>
+      </div>
+    )
   );
 }
 

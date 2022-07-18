@@ -20,17 +20,19 @@ import useDescriptionModal from "../../store/descriptionModal/useDescriptionModa
 import useDogsNft from "../../store/dogs/useDogs/useDogs";
 import Dropzone, { ImageProps } from "../../components/Dropzone";
 import copy from "copy-to-clipboard";
+import { TailSpin } from "react-loader-spinner";
+import { colorPalette } from "../../config/colorPalette";
 
 const RedyPage: React.FC = () => {
-  const { fetchDogsNft, postDogsNft, fetchCidImage, dogRedy } = useDogsNft();
+  const { fetchDogsNft, postDogsNft, fetchCidImage, dogRedy, loading, deleteDogsNft } = useDogsNft();
   const { setDescriptionModal } = useDescriptionModal();
 
   const [openModal, setOpenModal] = React.useState(false);
   const [image, setImage] = React.useState<ImageProps>({} as ImageProps);
 
   const handleSubmit = async (values: DogsNFTType) => {
-    postDogsNft("Redy", values, image.blob);
-    setOpenModal(false);
+    postDogsNft("Redy", values, image.blob, () => setOpenModal(false));
+    
     setImage({} as ImageProps);
   };
 
@@ -43,6 +45,14 @@ const RedyPage: React.FC = () => {
       alert("Cid nao encontrado!");
     }
   };
+
+  const handleRemove = ({ fileCid, _id }: DogsNFTType) => {
+    if (fileCid && fileCid.length > 0) {
+      deleteDogsNft(_id as string, "Redy", fileCid);
+    } else {
+      alert("Cid nao encontrado!");
+    }
+  }
 
   React.useEffect(() => {
     fetchDogsNft({ dogName: "Redy" });
@@ -101,8 +111,18 @@ const RedyPage: React.FC = () => {
               removeAction: true,
               icons: [
                 {
-                  icon: <FiDelete size={22} />,
-                  onClick: () => alert("remove"),
+                  icon: loading ? (
+                    <TailSpin
+                      height="30"
+                      width="30"
+                      color={colorPalette.primary[500]}
+                      ariaLabel='loading'
+                      radius={0}
+                    />
+                  ) : (
+                    <FiDelete size={22} />
+                  ),
+                  onClick: handleRemove,
                 },
               ],
             },
@@ -132,10 +152,24 @@ const RedyPage: React.FC = () => {
                   gap: "10px",
                 }}
               >
-                <Button onClick={() => {}} secondary>
-                  Cancelar
-                </Button>
-                <SubmitButton label="Confirmar" />
+                {
+                  loading ? (
+                    <TailSpin
+                      height="30"
+                      width="30"
+                      color={colorPalette.primary[500]}
+                      ariaLabel='loading'
+                      radius={0}
+                    />
+                  ) : (
+                    <>
+                      <Button onClick={() => {}} secondary>
+                        Cancelar
+                      </Button>
+                      <SubmitButton label="Confirmar" />
+                    </>
+                  )
+                }
               </div>
             </Form>
           </Grid>

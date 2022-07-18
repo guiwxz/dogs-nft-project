@@ -20,17 +20,18 @@ import useDescriptionModal from "../../store/descriptionModal/useDescriptionModa
 import useDogsNft from "../../store/dogs/useDogs/useDogs";
 import Dropzone, { ImageProps } from "../../components/Dropzone";
 import copy from "copy-to-clipboard";
+import { TailSpin } from "react-loader-spinner";
+import { colorPalette } from "../../config/colorPalette";
 
 const MellPage: React.FC = () => {
-  const { fetchDogsNft, postDogsNft, fetchCidImage, dogMell } = useDogsNft();
+  const { fetchDogsNft, postDogsNft, fetchCidImage, deleteDogsNft, dogMell, loading } = useDogsNft();
   const { setDescriptionModal } = useDescriptionModal();
 
   const [openModal, setOpenModal] = React.useState(false);
   const [image, setImage] = React.useState<ImageProps>({} as ImageProps);
 
   const handleSubmit = async (values: DogsNFTType) => {
-    postDogsNft("Mell", values, image.blob);
-    setOpenModal(false);
+    postDogsNft("Mell", values, image.blob, () => setOpenModal(false));
     setImage({} as ImageProps);
   };
 
@@ -43,6 +44,14 @@ const MellPage: React.FC = () => {
       alert("Cid nao encontrado!");
     }
   };
+
+  const handleRemove = ({ fileCid, _id }: DogsNFTType) => {
+    if (fileCid && fileCid.length > 0) {
+      deleteDogsNft(_id as string, "Mell", fileCid);
+    } else {
+      alert("Cid nao encontrado!");
+    }
+  }
 
   React.useEffect(() => {
     fetchDogsNft({ dogName: "Mell" });
@@ -101,8 +110,18 @@ const MellPage: React.FC = () => {
               removeAction: true,
               icons: [
                 {
-                  icon: <FiDelete size={22} />,
-                  onClick: () => alert("remove"),
+                  icon: loading ? (
+                    <TailSpin
+                      height="30"
+                      width="30"
+                      color={colorPalette.primary[500]}
+                      ariaLabel='loading'
+                      radius={0}
+                    />
+                  ) : (
+                    <FiDelete size={22} />
+                  ),
+                  onClick: handleRemove,
                 },
               ],
             },
@@ -132,10 +151,24 @@ const MellPage: React.FC = () => {
                   gap: "10px",
                 }}
               >
-                <Button onClick={() => {}} secondary>
-                  Cancelar
-                </Button>
-                <SubmitButton label="Confirmar" />
+                {
+                  loading ? (
+                    <TailSpin
+                      height="30"
+                      width="30"
+                      color={colorPalette.primary[500]}
+                      ariaLabel='loading'
+                      radius={0}
+                    />
+                  ) : (
+                    <>
+                      <Button onClick={() => {}} secondary>
+                        Cancelar
+                      </Button>
+                      <SubmitButton label="Confirmar" />
+                    </>
+                  )
+                }
               </div>
             </Form>
           </Grid>

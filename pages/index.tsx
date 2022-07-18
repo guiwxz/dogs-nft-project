@@ -1,7 +1,8 @@
+import HomePage from "../src/containers/HomePage";
 
 
-const HomePage = () => (
-  <></>
+const NextHomePage = () => (
+  <HomePage />
 );
 
-export default HomePage;
+export default NextHomePage;

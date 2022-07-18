@@ -1,4 +1,6 @@
 import React from "react";
+import { TailSpin } from "react-loader-spinner";
+import Loader from "../../../components/Loader";
 import api from "../../../services/api";
 import nftStorageApi from "../../../services/nftStorageApi";
 import { DogsNFTType, DogsNFTContextSchema, DogsName } from "../dogs.types";
@@ -8,6 +10,8 @@ export const DogsNFTContext = React.createContext<DogsNFTContextSchema>(
 );
 
 const DogsProvider: React.FC = ({ children }) => {
+  const [loading, setLoading] = React.useState(false);
+
   const [dogMell, setDogMell] = React.useState<DogsNFTType[]>(
     [] as DogsNFTType[]
   );
@@ -50,8 +54,10 @@ const DogsProvider: React.FC = ({ children }) => {
   const postDogsNft = async (
     dogName: DogsName,
     dog: DogsNFTType,
-    blob: any
+    blob: any,
+    callBack: () => void
   ) => {
+    setLoading(true);
     try {
       const res = await nftStorageApi.uploadBlob(blob);
 
@@ -67,13 +73,16 @@ const DogsProvider: React.FC = ({ children }) => {
         });
         console.log(response);
 
-        fetchDogsNft({ dogName });
+        await fetchDogsNft({ dogName });
+        callBack();
+        
       } else {
         console.warn("Alguma coisa deu errado");
       }
     } catch (err) {
       console.warn(err);
     }
+    setLoading(false);
   };
 
   const fetchCidImage = async (cid: string) => {
@@ -87,6 +96,29 @@ const DogsProvider: React.FC = ({ children }) => {
     } catch (err) {
       console.warn(err);
     }
+  };
+
+  const deleteDogsNft = async (
+    _id: string,
+    dogName: DogsName,
+    cid: string,
+  ) => {
+    setLoading(true);
+    try {
+      const res = await nftStorageApi.deleteCid(cid);
+
+      if (res.ok) {
+        const response = await api.deleteDogsNft(_id);
+
+        await fetchDogsNft({ dogName });
+        
+      } else {
+        console.warn("Alguma coisa deu errado");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+    setLoading(false);
   };
 
   /*
@@ -135,6 +167,8 @@ const DogsProvider: React.FC = ({ children }) => {
         fetchDogsNft,
         postDogsNft,
         fetchCidImage,
+        deleteDogsNft,
+        loading,
       }}
     >
       {children}
